@@ -2,7 +2,6 @@ package com.hemnet.test.feature.properties
 
 import com.hemnet.test.base.BaseViewModel
 import com.hemnet.test.base.ViewState
-import com.hemnet.test.data.repository.PropertiesRepository
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
 import com.hemnet.test.domain.repository.BaseRepository
@@ -21,8 +20,7 @@ class PropertiesViewModel @Inject constructor(
     }
 
     fun onFilterChanged(type: PropertyType?) {
-        (repository as PropertiesRepository).propertyType = type
-        refresh(true)
+        refresh(type?.ordinal,true)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

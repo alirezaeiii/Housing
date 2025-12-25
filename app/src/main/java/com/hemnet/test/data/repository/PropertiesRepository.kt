@@ -23,11 +23,9 @@ class PropertiesRepository @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : BaseRepository<List<@JvmSuppressWildcards Property>>(context, dispatcher) {
 
-    var propertyType: PropertyType? = null
-
-    override suspend fun query(): List<Property> {
-        return propertyType?.let {
-            dao.getFilteredProperty(it.ordinal).asDomainModel()
+    override suspend fun query(type: Int?): List<Property> {
+        return type?.let {
+            dao.getFilteredProperty(it).asDomainModel()
         } ?: run {
             dao.getAll().asDomainModel()
         }

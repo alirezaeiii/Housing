@@ -1,7 +1,6 @@
 package com.hemnet.test.domain.repository
 
 import android.content.Context
-import android.util.Log
 import com.hemnet.test.R
 import com.hemnet.test.utils.Async
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,35 +13,35 @@ abstract class BaseRepository<T>(
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    protected abstract suspend fun query(): T?
+    protected abstract suspend fun query(type: Int?): T?
 
     protected abstract suspend fun fetch(): T
 
     protected abstract suspend fun saveFetchResult(item: T)
 
-    fun getResult(): Flow<Async<T>> = flow {
+    fun getResult(type: Int? = null): Flow<Async<T>> = flow {
         emit(Async.Loading())
-        val dbData = query()
+        val dbData = query(type)
 
         when {
-            dbData == null -> load()
-            dbData is List<*> && dbData.isEmpty() -> load()
-            else -> refresh(dbData)
+            dbData == null -> load(type)
+            dbData is List<*> && dbData.isEmpty() -> load(type)
+            else -> refresh(dbData, type)
         }
     }.flowOn(ioDispatcher)
 
-    private suspend fun FlowCollector<Async<T>>.load() {
+    private suspend fun FlowCollector<Async<T>>.load(type: Int?) {
         try {
             // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
             refresh()
             // ****** VIEW CACHE ******
-            emit(Async.Success(query()!!))
+            emit(Async.Success(query(type)!!))
         } catch (_: Throwable) {
             emit(Async.Error(context.getString(R.string.error_msg)))
         }
     }
 
-    private suspend fun FlowCollector<Async<T>>.refresh(dbData: T) {
+    private suspend fun FlowCollector<Async<T>>.refresh(dbData: T, type: Int?) {
         // ****** VIEW CACHE ******
         emit(Async.Success(dbData))
         emit(Async.Loading(true))
@@ -50,7 +49,7 @@ abstract class BaseRepository<T>(
             // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
             refresh()
             // ****** VIEW CACHE ******
-            emit(Async.Success(query()!!))
+            emit(Async.Success(query(type)!!))
         } catch (_: Throwable) {
             emit(Async.Error(context.getString(R.string.refresh_error_msg), true))
         }

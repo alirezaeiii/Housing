@@ -7,7 +7,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +27,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FilterChip
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -158,7 +156,7 @@ fun PropertiesScreen(
                         Column {
                             SwipeRefresh(
                                 state = rememberSwipeRefreshState(state.base.isRefreshing),
-                                onRefresh = { viewModel.refresh(true) },
+                                onRefresh = { viewModel.refresh(isRefreshing = true) },
                                 indicator = { state, trigger ->
                                     SwipeRefreshIndicator(
                                         state,
