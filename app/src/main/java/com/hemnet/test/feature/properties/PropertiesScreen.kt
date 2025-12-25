@@ -156,7 +156,7 @@ fun PropertiesScreen(
                         Column {
                             SwipeRefresh(
                                 state = rememberSwipeRefreshState(state.base.isRefreshing),
-                                onRefresh = { viewModel.refresh(isRefreshing = true) },
+                                onRefresh = { viewModel.refresh(true) },
                                 indicator = { state, trigger ->
                                     SwipeRefreshIndicator(
                                         state,

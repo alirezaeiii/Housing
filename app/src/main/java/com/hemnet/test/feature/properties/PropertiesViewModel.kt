@@ -10,17 +10,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PropertiesViewModel @Inject constructor(
-    private val repository: BaseRepository<List<Property>>
+    repository: BaseRepository<List<Property>>
 ) : BaseViewModel<List<Property>, PropertiesViewState>(
     repository,
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {
+
+    private var propertyType: PropertyType? = null
+
     init {
         refresh()
     }
 
     fun onFilterChanged(type: PropertyType?) {
-        refresh(type?.ordinal,true)
+        propertyType = type
+        refresh(true)
+    }
+
+    fun refresh(isRefreshing: Boolean) {
+        refresh(propertyType?.ordinal, isRefreshing)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

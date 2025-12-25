@@ -29,7 +29,7 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
 
     protected abstract fun onSuccess(items: T, isRefreshing: Boolean)
 
-    open fun refresh(type: Int? = null, isRefreshing: Boolean = false) {
+    fun refresh(type: Int? = null, isRefreshing: Boolean = false) {
         repository.getResult(type).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
