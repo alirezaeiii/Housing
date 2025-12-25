@@ -29,6 +29,10 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
 
     protected abstract fun onSuccess(items: T, isRefreshing: Boolean)
 
+    protected fun updateState(reducer: (S) -> S) {
+        _state.update(reducer)
+    }
+
     fun refresh(type: Int? = null, isRefreshing: Boolean = false) {
         repository.getResult(type).onEach { uiState ->
             when (uiState) {
@@ -50,10 +54,6 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    private fun updateState(reducer: (S) -> S) {
-        _state.update(reducer)
     }
 
     private fun reduceLoading(old: S, isRefreshing: Boolean): S =

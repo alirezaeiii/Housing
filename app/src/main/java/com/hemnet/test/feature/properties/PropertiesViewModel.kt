@@ -16,19 +16,20 @@ class PropertiesViewModel @Inject constructor(
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {
 
-    private var propertyType: PropertyType? = null
-
     init {
         refresh()
     }
 
     fun onFilterChanged(type: PropertyType?) {
-        propertyType = type
+        updateState { old ->
+            old.copy(propertyType = type)
+        }
         refresh(true)
     }
 
     fun refresh(isRefreshing: Boolean) {
-        refresh(propertyType?.ordinal, isRefreshing)
+        val type = _state.value.propertyType
+        refresh(type?.ordinal, isRefreshing)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {
@@ -39,7 +40,8 @@ class PropertiesViewModel @Inject constructor(
                 base = ViewState(
                     items = items,
                 ),
-                filteredProperties = items
+                filteredProperties = items,
+                propertyType = _state.value.propertyType
             )
         }
     }
@@ -53,6 +55,7 @@ class PropertiesViewModel @Inject constructor(
         _state.value = PropertiesViewState(
             query = query,
             filteredProperties = filtered,
+            propertyType = _state.value.propertyType,
             base = ViewState(
                 items = meals
             )
