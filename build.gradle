@@ -8,12 +8,12 @@ buildscript {
         accompanist_version = '0.32.0'
     }
     repositories {
-        //google()
-        //mavenCentral()
-        //maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven {
+        google()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        /*maven {
             url 'https://maven.myket.ir'
-        }
+        }*/
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.13.0'
@@ -31,12 +31,12 @@ plugins {
 
 allprojects {
     repositories {
-        //google()
-        //mavenCentral()
-        //maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven {
+        google()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        /*maven {
             url 'https://maven.myket.ir'
-        }
+        }*/
     }
 }
 
