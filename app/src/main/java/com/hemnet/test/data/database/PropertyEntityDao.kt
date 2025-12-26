@@ -11,7 +11,7 @@ interface PropertyEntityDao {
     suspend fun getAll(): List<PropertyEntity>
 
     @Query("SELECT * FROM property WHERE type=:type")
-    suspend fun getFilteredProperty(type: Int): List<PropertyEntity>
+    suspend fun getFilteredProperties(type: Int): List<PropertyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(meals: List<PropertyEntity>)

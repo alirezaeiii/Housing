@@ -7,7 +7,6 @@ import com.hemnet.test.data.database.asDomainModel
 import com.hemnet.test.data.response.asDomainModel
 import com.hemnet.test.di.IoDispatcher
 import com.hemnet.test.domain.model.Property
-import com.hemnet.test.domain.model.PropertyType
 import com.hemnet.test.domain.model.asDatabaseModel
 import com.hemnet.test.domain.repository.BaseRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,7 +24,7 @@ class PropertiesRepository @Inject constructor(
 
     override suspend fun query(type: Int?): List<Property> {
         return type?.let {
-            dao.getFilteredProperty(it).asDomainModel()
+            dao.getFilteredProperties(it).asDomainModel()
         } ?: run {
             dao.getAll().asDomainModel()
         }
