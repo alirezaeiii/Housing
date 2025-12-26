@@ -43,7 +43,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -136,7 +135,7 @@ fun PropertiesScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Food App")
+                        Text("Housing App")
                     },
                     actions = {
                         IconButton(onClick = {
@@ -150,25 +149,23 @@ fun PropertiesScreen(
                 )
             },
             content = {
-                Column {
-                    PropertiesFilterChips(viewModel)
-                    Content(viewModel) { state ->
-                        Column {
-                            SwipeRefresh(
-                                state = rememberSwipeRefreshState(state.base.isRefreshing),
-                                onRefresh = { viewModel.refresh(true) },
-                                indicator = { state, trigger ->
-                                    SwipeRefreshIndicator(
-                                        state,
-                                        trigger
-                                    )
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.CenterHorizontally)
-                                    .fillMaxSize()
-                            ) {
-                                PropertiesScreenContent(state, navigateToDetail)
-                            }
+                Content(viewModel) { state ->
+                    Column {
+                        PropertiesFilterChips(state.propertyType, viewModel)
+                        SwipeRefresh(
+                            state = rememberSwipeRefreshState(state.base.isRefreshing),
+                            onRefresh = { viewModel.refresh(true) },
+                            indicator = { state, trigger ->
+                                SwipeRefreshIndicator(
+                                    state,
+                                    trigger
+                                )
+                            },
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .fillMaxSize()
+                        ) {
+                            PropertiesScreenContent(state, navigateToDetail)
                         }
                     }
                 }
@@ -178,11 +175,10 @@ fun PropertiesScreen(
 }
 
 @Composable
-fun PropertiesFilterChips(viewModel: PropertiesViewModel) {
-
-    val state by viewModel.state.collectAsState()
-    val selectedType = state.propertyType
-
+fun PropertiesFilterChips(
+    selectedType: PropertyType?,
+    viewModel: PropertiesViewModel
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(12.dp)
