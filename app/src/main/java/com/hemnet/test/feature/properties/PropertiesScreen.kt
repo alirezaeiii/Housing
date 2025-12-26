@@ -43,9 +43,9 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -177,27 +177,23 @@ fun PropertiesScreen(
     }
 }
 
-@ExperimentalMaterialApi
 @Composable
 fun PropertiesFilterChips(viewModel: PropertiesViewModel) {
-    var selectedFilters by remember {
-        mutableStateOf(setOf<PropertyType>())
-    }
 
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(12.dp)) {
+    val state by viewModel.state.collectAsState()
+    val selectedType = state.propertyType
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(12.dp)
+    ) {
         PropertyType.entries.forEach { filter ->
-            val isSelected = filter in selectedFilters
+            val isSelected = filter == selectedType
+
             CustomFilterChip(
                 text = filter.name,
                 selected = isSelected,
                 onClick = {
-                    selectedFilters =
-                        if (isSelected) {
-                            selectedFilters - filter
-                        } else {
-                            setOf(filter)
-                        }
                     viewModel.onFilterChanged(
                         if (isSelected) null else filter
                     )
