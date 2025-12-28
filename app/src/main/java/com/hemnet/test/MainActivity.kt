@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
 @ExperimentalFoundationApi
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Screens.Meals.title) {
-        composable(Screens.Meals.title) {
+    NavHost(navController, startDestination = Screens.Properties.title) {
+        composable(Screens.Properties.title) {
             PropertiesScreen { meal ->
                 val json =
                     Uri.encode(Gson().toJson(meal, object : TypeToken<Property>() {}.type))
