@@ -4,6 +4,6 @@ import com.hemnet.test.data.response.PropertiesResponse
 import retrofit2.http.GET
 
 interface BackendApi {
-    @GET("adverts.json")
+    @GET("properties.json")
     suspend fun getProperties(): PropertiesResponse
 }

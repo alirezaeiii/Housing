@@ -21,7 +21,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideBackendApi(moshi: Moshi): BackendApi = Retrofit.Builder()
-        .baseUrl("https://gist.githubusercontent.com/soulzidda/220a8305a6437f3be37eae6198f4d0db/raw/bed8d1e25b85741a4e2ff1d88230b0024ba04e13/")
+        .baseUrl("https://gist.githubusercontent.com/alirezaeiii/ee5c416bb7283357f4f9777f63f68bc2/raw/65851a2f3a8a9ab01f75cfcbe02c25085aab3f91/")
         .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
         .build()
         .create(BackendApi::class.java)
