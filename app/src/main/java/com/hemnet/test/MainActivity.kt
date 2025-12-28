@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity() {
 fun NavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = Screens.Properties.title) {
         composable(Screens.Properties.title) {
-            PropertiesScreen { meal ->
+            PropertiesScreen { property ->
                 val json =
-                    Uri.encode(Gson().toJson(meal, object : TypeToken<Property>() {}.type))
+                    Uri.encode(Gson().toJson(property, object : TypeToken<Property>() {}.type))
                 navController.navigate(
                     Screens.Details.title.replace
                         ("{${PROPERTY}}", json)
