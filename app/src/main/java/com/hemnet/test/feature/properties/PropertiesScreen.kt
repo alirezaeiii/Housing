@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -70,6 +71,7 @@ import com.hemnet.test.base.Content
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
 import com.hemnet.test.feature.common.MealImage
+import com.hemnet.test.ui.lightGreen
 import com.hemnet.test.ui.typography
 import kotlinx.coroutines.launch
 
@@ -98,7 +100,7 @@ fun PropertiesScreen(
             TextField(
                 value = query,
                 onValueChange = { query = it },
-                label = { Text("Query") },
+                label = { Text(stringResource(R.string.query)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
@@ -119,7 +121,7 @@ fun PropertiesScreen(
                         modalBottomSheetState.hide()
                     }
                 }) {
-                    Text(text = "Clear")
+                    Text(stringResource(R.string.clear))
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(onClick = {
@@ -128,7 +130,7 @@ fun PropertiesScreen(
                         modalBottomSheetState.hide()
                     }
                 }) {
-                    Text(text = "Search")
+                    Text(stringResource(R.string.search))
                 }
             }
         }
@@ -137,7 +139,7 @@ fun PropertiesScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Housing App")
+                        Text(stringResource(R.string.hemnet))
                     },
                     actions = {
                         IconButton(onClick = {
@@ -167,7 +169,7 @@ fun PropertiesScreen(
                                 .align(Alignment.CenterHorizontally)
                                 .fillMaxSize()
                         ) {
-                            PropertiesScreenContent(state, navigateToDetail)
+                            PropertiesScreenContent(state.filteredProperties, navigateToDetail)
                         }
                     }
                 }
@@ -203,10 +205,10 @@ fun PropertiesFilterChips(
 
 @Composable
 fun PropertiesScreenContent(
-    state: PropertiesViewState,
+    filteredProperties: List<Property>,
     navigateToDetail: (Property) -> Unit
 ) {
-    if (state.filteredProperties.isEmpty()) {
+    if (filteredProperties.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -217,9 +219,9 @@ fun PropertiesScreenContent(
         val orientation = LocalConfiguration.current.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.filteredProperties) { meal ->
+                items(filteredProperties) { property ->
                     Divider(thickness = 8.dp)
-                    PropertyRowComposable(meal, navigateToDetail)
+                    PropertyRowComposable(property, navigateToDetail)
                 }
             }
         } else {
@@ -231,7 +233,7 @@ fun PropertiesScreenContent(
                     )
                 )
             ) {
-                itemsIndexed(state.filteredProperties) { index, meal ->
+                itemsIndexed(filteredProperties) { index, property ->
                     val isFirstColumn = index % 2 == 0
                     Column(
                         Modifier.padding(
@@ -241,7 +243,7 @@ fun PropertiesScreenContent(
                             0.dp
                         )
                     ) {
-                        PropertyRowComposable(meal, navigateToDetail)
+                        PropertyRowComposable(property, navigateToDetail)
                     }
                 }
             }
@@ -295,7 +297,7 @@ private fun CustomFilterChip(
     onClick: () -> Unit
 ) {
     Surface(
-        color = if (selected) Color(0xFFB9FBC0) else Color.White,
+        color = if (selected) lightGreen else Color.White,
         contentColor = Color.Black,
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, Color.LightGray),
