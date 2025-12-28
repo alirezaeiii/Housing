@@ -33,12 +33,17 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
         _state.update(reducer)
     }
 
-    fun refresh(type: Int? = null, isRefreshing: Boolean = false) {
+    fun refresh(
+        type: Int? = null,
+        isRefreshing: Boolean = false,
+        hideRefreshing: Boolean = false,
+        hideErrorToast: Boolean = false
+    ) {
         repository.getResult(type).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
-                        reduceLoading(old, uiState.isRefreshing)
+                        reduceLoading(old, uiState.isRefreshing, hideRefreshing)
                     }
                 }
 
@@ -48,7 +53,7 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
                     updateState { old ->
                         reduceError(old, uiState.message, uiState.isWarning)
                     }
-                    if (uiState.isWarning) {
+                    if (uiState.isWarning && !hideErrorToast) {
                         emitWarning(uiState.message)
                     }
                 }
@@ -56,8 +61,8 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
         }.launchIn(viewModelScope)
     }
 
-    private fun reduceLoading(old: S, isRefreshing: Boolean): S =
-        old.withLoading(isRefreshing)
+    private fun reduceLoading(old: S, isRefreshing: Boolean, hideRefreshing: Boolean): S =
+        old.withLoading(isRefreshing, hideRefreshing)
 
 
     private fun reduceError(old: S, msg: String, isWarning: Boolean): S =

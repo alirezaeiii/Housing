@@ -3,10 +3,10 @@ package com.hemnet.test.feature.properties
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +26,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -49,7 +48,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -59,9 +57,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.hemnet.test.R
 import com.hemnet.test.base.Content
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
@@ -70,8 +74,6 @@ import com.hemnet.test.ui.typography
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
-@ExperimentalFoundationApi
 @Composable
 fun PropertiesScreen(
     viewModel: PropertiesViewModel = hiltViewModel(),
@@ -199,14 +201,18 @@ fun PropertiesFilterChips(
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 fun PropertiesScreenContent(
     state: PropertiesViewState,
     navigateToDetail: (Property) -> Unit
 ) {
     if (state.filteredProperties.isEmpty()) {
-        Text(text = "No property found")
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            NoDataFoundAnimation(modifier = Modifier.size(200.dp))
+        }
     } else {
         val orientation = LocalConfiguration.current.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -300,4 +306,23 @@ private fun CustomFilterChip(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         )
     }
+}
+
+@Composable
+private fun NoDataFoundAnimation(modifier: Modifier = Modifier) {
+    val preloaderLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(
+            R.raw.no_data_found,
+        ),
+    )
+    val preloaderProgress by animateLottieCompositionAsState(
+        preloaderLottieComposition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+    )
+    LottieAnimation(
+        composition = preloaderLottieComposition,
+        progress = preloaderProgress,
+        modifier = modifier,
+    )
 }
