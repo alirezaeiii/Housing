@@ -39,7 +39,7 @@ fun <T, S : BaseScreenState<T>> Content(
         }
 
         if (!state.base.isLoading && (state.base.error.isEmpty() || state.base.isWarning)) {
-                mainContent(state)
+            mainContent(state)
         }
     }
 }
