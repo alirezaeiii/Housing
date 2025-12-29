@@ -22,5 +22,5 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMealEntityDao(appDatabase: AppDatabase): PropertyEntityDao = appDatabase.propertyDao()
+    fun providePropertyEntityDao(appDatabase: AppDatabase): PropertyEntityDao = appDatabase.propertyDao()
 }
