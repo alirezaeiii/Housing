@@ -24,16 +24,15 @@ class PropertiesViewModel @Inject constructor(
         updateState { old ->
             old.copy(propertyType = type)
         }
-        refresh(isRefreshing = true, hideRefreshing = true, hideErrorToast = true)
+        refresh(isRefreshing = true, hideRefreshing = true)
     }
 
     fun refresh(
         isRefreshing: Boolean,
-        hideRefreshing: Boolean = false,
-        hideErrorToast: Boolean = false
+        hideRefreshing: Boolean = false
     ) {
         val type = _state.value.propertyType
-        refresh(type?.ordinal, isRefreshing, hideRefreshing, hideErrorToast)
+        refresh(type?.ordinal, isRefreshing, hideRefreshing)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

@@ -36,8 +36,7 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
     fun refresh(
         type: Int? = null,
         isRefreshing: Boolean = false,
-        hideRefreshing: Boolean = false,
-        hideErrorToast: Boolean = false
+        hideRefreshing: Boolean = false
     ) {
         repository.getResult(type).onEach { uiState ->
             when (uiState) {
@@ -53,7 +52,7 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
                     updateState { old ->
                         reduceError(old, uiState.message, uiState.isWarning)
                     }
-                    if (uiState.isWarning && !hideErrorToast) {
+                    if (uiState.isWarning && !hideRefreshing) {
                         emitWarning(uiState.message)
                     }
                 }
