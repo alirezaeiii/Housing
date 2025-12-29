@@ -70,7 +70,7 @@ import com.hemnet.test.R
 import com.hemnet.test.base.Content
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
-import com.hemnet.test.feature.common.MealImage
+import com.hemnet.test.feature.common.PropertyImage
 import com.hemnet.test.ui.lightGreen
 import com.hemnet.test.ui.typography
 import kotlinx.coroutines.launch
@@ -266,7 +266,7 @@ fun PropertyRowComposable(
                 navigateToDetail.invoke(property)
             }
     ) {
-        MealImage(property.image, Modifier.size(160.dp))
+        PropertyImage(property.image, Modifier.size(160.dp))
         Column(
             modifier = Modifier
                 .padding(start = 8.dp)

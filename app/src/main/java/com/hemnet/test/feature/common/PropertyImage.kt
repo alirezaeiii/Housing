@@ -17,7 +17,7 @@ import coil.compose.rememberAsyncImagePainter
 import okhttp3.OkHttpClient
 
 @Composable
-fun MealImage(thumb: String, modifier: Modifier = Modifier) {
+fun PropertyImage(thumb: String, modifier: Modifier = Modifier) {
     Box(
         modifier
             .clip(RoundedCornerShape(4.dp))

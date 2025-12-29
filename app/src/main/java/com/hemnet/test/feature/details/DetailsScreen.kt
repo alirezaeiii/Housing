@@ -30,7 +30,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
 import com.hemnet.test.domain.model.Property
-import com.hemnet.test.feature.common.MealImage
+import com.hemnet.test.feature.common.PropertyImage
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
@@ -123,7 +123,7 @@ fun DetailsScreen(
                 .layoutId("image")
                 .fillMaxSize()
         ) {
-            MealImage(
+            PropertyImage(
                 thumb = property.image,
                 modifier = Modifier.matchParentSize()
             )
