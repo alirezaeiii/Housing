@@ -50,17 +50,17 @@ class PropertiesViewModel @Inject constructor(
     }
 
     fun submitQuery(query: String?, items: List<Property>? = null) {
-        val meals = items ?: _state.value.base.items!!
+        val properties = items ?: _state.value.base.items!!
 
-        val filtered = if (query.isNullOrBlank()) meals
-        else meals.filter { it.area.contains(query.trim(), ignoreCase = true) }
+        val filtered = if (query.isNullOrBlank()) properties
+        else properties.filter { it.area.contains(query.trim(), ignoreCase = true) }
 
         _state.value = PropertiesViewState(
             query = query,
             filteredProperties = filtered,
             propertyType = _state.value.propertyType,
             base = ViewState(
-                items = meals
+                items = properties
             )
         )
     }
