@@ -21,7 +21,7 @@ compose = "1.9.2"
 androidx-constraintlayout-compose = "1.1.1"
 icons-extended = "1.7.8"
 navigation = "2.8.4"
-retrofit = "2.11.0"
+retrofit = "2.12.0"
 moshi-converter = "2.9.0"
 gson = "2.13.2"
 lottie = "4.0.0"
@@ -52,7 +52,6 @@ androidx-navigation = { module = "androidx.navigation:navigation-compose", versi
 androidx-room = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }

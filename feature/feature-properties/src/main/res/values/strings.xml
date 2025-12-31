@@ -3,4 +3,7 @@
     <string name="query">Query</string>
     <string name="search">Search</string>
     <string name="clear">Clear</string>
+    <string name="property_num_of_rooms">%1$s room</string>
+    <string name="property_living_area">%1$s m²</string>
+    <string name="property_days_on_hemnet">%1$s day</string>
 </resources>
