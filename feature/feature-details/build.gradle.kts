@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.composeCompiler)
 }
 
 android {
-    namespace = "com.hemnet.test.data"
+    namespace = "com.hemnet.test.feature.details"
     compileSdk {
         version = release(35)
     }
@@ -36,18 +35,22 @@ android {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
 }
 
 dependencies {
-    api(project(":core:domain"))
-    implementation(libs.retrofit)
-    implementation(libs.moshi.converter)
+    implementation(project(":core:domain"))
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.compose)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.uitooloing)
+    implementation(libs.androidx.compose.constraintlayout)
 
-    implementation(libs.androidx.room)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-    implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
 }

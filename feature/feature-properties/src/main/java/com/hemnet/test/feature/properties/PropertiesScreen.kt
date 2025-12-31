@@ -66,7 +66,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.hemnet.test.R
 import com.hemnet.test.common.base.Content
 import com.hemnet.test.common.ui.common.PropertyImage
 import com.hemnet.test.common.ui.lightGreen
