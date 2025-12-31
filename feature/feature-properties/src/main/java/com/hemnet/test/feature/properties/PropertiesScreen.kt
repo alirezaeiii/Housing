@@ -49,7 +49,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
@@ -69,7 +68,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.hemnet.test.common.base.Content
 import com.hemnet.test.common.ui.common.PropertyImage
 import com.hemnet.test.common.ui.lightGreen
-import com.hemnet.test.common.ui.typography
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
 import kotlinx.coroutines.launch
@@ -259,7 +257,6 @@ fun PropertyRowComposable(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colors.surface)
-            .clip(RoundedCornerShape(4.dp))
             .padding(16.dp)
             .clickable {
                 navigateToDetail.invoke(property)
@@ -318,7 +315,8 @@ fun PropertyRowComposable(
                 Text(
                     text = stringResource(
                         R.string.property_days_on_hemnet,
-                        it
+                        it,
+                        stringResource(if (it > 1) R.string.days else R.string.day)
                     ),
                     style = MaterialTheme.typography.body2
                 )
