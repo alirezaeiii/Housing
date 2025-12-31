@@ -269,7 +269,7 @@ fun PropertyRowComposable(
         Spacer(Modifier.padding(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
                 property.streetAddress ?: "",
@@ -278,7 +278,7 @@ fun PropertyRowComposable(
             Text(
                 property.area,
                 fontWeight = FontWeight.Bold,
-                style = typography.h6
+                style = MaterialTheme.typography.body1
             )
             Text(
                 property.municipality ?: "",
@@ -288,33 +288,41 @@ fun PropertyRowComposable(
         Spacer(Modifier.padding(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(
-                text = property.averagePrice ?: "",
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = stringResource(
-                    R.string.property_living_area,
-                    property.livingArea ?: ""
-                ),
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = stringResource(
-                    R.string.property_num_of_rooms,
-                    property.numberOfRooms ?: ""
-                ),
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = stringResource(
-                    R.string.property_days_on_hemnet,
-                    property.daysOnHemnet ?: ""
-                ),
-                style = MaterialTheme.typography.body2
-            )
+            property.averagePrice?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            property.livingArea?.let {
+                Text(
+                    text = stringResource(
+                        R.string.property_living_area,
+                        it
+                    ),
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            property.numberOfRooms?.let {
+                Text(
+                    text = stringResource(
+                        R.string.property_num_of_rooms,
+                        it
+                    ),
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            property.daysOnHemnet?.let {
+                Text(
+                    text = stringResource(
+                        R.string.property_days_on_hemnet,
+                        it
+                    ),
+                    style = MaterialTheme.typography.body2
+                )
+            }
         }
     }
 }
