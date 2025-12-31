@@ -47,7 +47,12 @@ fun NavGraph(navController: NavHostController) {
         composable(Screens.Properties.title) {
             PropertiesScreen { property ->
                 val json =
-                    Uri.encode(Gson().toJson(property, object : TypeToken<Property>() {}.type))
+                    Uri.encode(
+                        Gson().toJson(
+                            property,
+                            object : TypeToken<Property>() {}.type
+                        )
+                    )
                 navController.navigate(
                     Screens.Details.title.replace
                         ("{${PROPERTY}}", json)
