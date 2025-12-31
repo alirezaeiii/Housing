@@ -29,8 +29,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
+import com.hemnet.test.common.ui.common.PropertyImage
 import com.hemnet.test.domain.model.Property
-import com.hemnet.test.feature.common.PropertyImage
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable

@@ -67,12 +67,12 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.hemnet.test.R
-import com.hemnet.test.base.Content
+import com.hemnet.test.common.base.Content
+import com.hemnet.test.common.ui.common.PropertyImage
+import com.hemnet.test.common.ui.lightGreen
+import com.hemnet.test.common.ui.typography
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
-import com.hemnet.test.feature.common.PropertyImage
-import com.hemnet.test.ui.lightGreen
-import com.hemnet.test.ui.typography
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

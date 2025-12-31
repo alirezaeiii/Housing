@@ -1,7 +1,7 @@
 package com.hemnet.test.feature.properties
 
-import com.hemnet.test.base.BaseScreenState
-import com.hemnet.test.base.ViewState
+import com.hemnet.test.common.base.BaseScreenState
+import com.hemnet.test.common.base.ViewState
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
 

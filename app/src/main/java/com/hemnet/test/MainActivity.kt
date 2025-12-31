@@ -15,12 +15,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hemnet.test.common.ui.AppTheme
+import com.hemnet.test.common.ui.common.Screens
+import com.hemnet.test.common.ui.common.Screens.Companion.PROPERTY
 import com.hemnet.test.domain.model.Property
-import com.hemnet.test.feature.common.Screens
-import com.hemnet.test.feature.common.Screens.Companion.PROPERTY
 import com.hemnet.test.feature.details.DetailsScreen
 import com.hemnet.test.feature.properties.PropertiesScreen
-import com.hemnet.test.ui.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

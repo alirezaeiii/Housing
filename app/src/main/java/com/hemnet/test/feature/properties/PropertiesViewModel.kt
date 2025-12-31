@@ -1,10 +1,10 @@
 package com.hemnet.test.feature.properties
 
-import com.hemnet.test.base.BaseViewModel
-import com.hemnet.test.base.ViewState
+import com.hemnet.test.common.base.BaseRepository
+import com.hemnet.test.common.base.BaseViewModel
+import com.hemnet.test.common.base.ViewState
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
-import com.hemnet.test.domain.repository.BaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
