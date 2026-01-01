@@ -26,7 +26,6 @@ moshi-converter = "2.9.0"
 gson = "2.13.2"
 lottie = "4.0.0"
 lifecycleRuntimeKtx = "2.9.4"
-composeBom = "2024.09.00"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -63,7 +62,6 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-compose-core = { module = "io.coil-kt:coil", version.ref = "coil" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
