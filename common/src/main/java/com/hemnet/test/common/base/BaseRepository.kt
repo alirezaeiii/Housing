@@ -24,34 +24,32 @@ abstract class BaseRepository<T>(
         val dbData = query(type)
 
         when {
-            dbData == null -> load(type)
-            dbData is List<*> && dbData.isEmpty() -> load(type)
-            else -> refresh(dbData, type)
+            dbData == null -> load(type = type)
+            dbData is List<*> && dbData.isEmpty() -> load(type = type)
+            else -> load(dbData, type)
         }
     }.flowOn(ioDispatcher)
 
-    private suspend fun FlowCollector<Async<T>>.load(type: Int?) {
-        try {
-            // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
-            refresh()
+    private suspend fun FlowCollector<Async<T>>.load(dbData: T? = null, type: Int?) {
+        dbData?.let {
             // ****** VIEW CACHE ******
-            emit(Async.Success(query(type)!!))
-        } catch (_: Throwable) {
-            emit(Async.Error(context.getString(R.string.error_msg)))
+            emit(Async.Success(it))
+            emit(Async.Loading(true))
         }
-    }
-
-    private suspend fun FlowCollector<Async<T>>.refresh(dbData: T, type: Int?) {
-        // ****** VIEW CACHE ******
-        emit(Async.Success(dbData))
-        emit(Async.Loading(true))
         try {
             // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
             refresh()
             // ****** VIEW CACHE ******
             emit(Async.Success(query(type)!!))
         } catch (_: Throwable) {
-            emit(Async.Error(context.getString(R.string.refresh_error_msg), true))
+            emit(
+                Async.Error(
+                    context.getString(
+                        if (dbData == null) R.string.error_msg else R.string.refresh_error_msg
+                    ),
+                    dbData != null
+                )
+            )
         }
     }
 
