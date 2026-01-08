@@ -56,7 +56,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -75,7 +74,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun PropertiesScreen(
-    viewModel: PropertiesViewModel = hiltViewModel(),
+    viewModel: PropertiesViewModel,
     navigateToDetail: (Property) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()

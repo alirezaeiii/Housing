@@ -51,11 +51,8 @@ dependencies {
     implementation(libs.androidx.compose)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material.icons.extended)
-
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
-
     implementation(libs.lottie.compose)
     implementation(libs.accompanist.swiperefresh)
 }

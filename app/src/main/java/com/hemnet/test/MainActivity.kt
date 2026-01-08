@@ -22,6 +22,7 @@ import com.hemnet.test.domain.model.Property
 import com.hemnet.test.feature.details.DetailsScreen
 import com.hemnet.test.feature.properties.PropertiesScreen
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -45,27 +46,22 @@ class MainActivity : AppCompatActivity() {
 fun NavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = Screens.Properties.title) {
         composable(Screens.Properties.title) {
-            PropertiesScreen { property ->
-                val json =
-                    Uri.encode(
-                        Gson().toJson(
-                            property,
-                            object : TypeToken<Property>() {}.type
-                        )
+            PropertiesScreen(hiltViewModel()) { property ->
+                val json = Uri.encode(
+                    Gson().toJson(
+                        property, object : TypeToken<Property>() {}.type
                     )
+                )
                 navController.navigate(
-                    Screens.Details.title.replace
-                        ("{${PROPERTY}}", json)
+                    Screens.Details.title.replace("{${PROPERTY}}", json)
                 )
             }
         }
         composable(
             Screens.Details.title, arguments = listOf(
-                navArgument(PROPERTY) {
-                    type = NavType.StringType
-                }
-            )
-        ) { from ->
+            navArgument(PROPERTY) {
+                type = NavType.StringType
+            })) { from ->
             DetailsScreen(
                 Gson().fromJson(
                     from.arguments?.getString(PROPERTY),
