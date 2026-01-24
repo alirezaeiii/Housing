@@ -9,11 +9,11 @@ interface BaseScreenState<T> {
         copyWithBase(newBase) as S
 }
 
-fun <T, S : BaseScreenState<T>> S.withLoading(isRefreshing: Boolean, hideRefreshing: Boolean): S =
+fun <T, S : BaseScreenState<T>> S.withLoading(isRefreshing: Boolean, showRefreshing: Boolean): S =
     withBase(
         base.copy(
             isLoading = !isRefreshing,
-            isRefreshing = isRefreshing && !hideRefreshing,
+            isRefreshing = isRefreshing && showRefreshing,
             error = ""
         )
     )

@@ -13,8 +13,8 @@ import com.hemnet.test.common.ui.common.ErrorScreen
 import com.hemnet.test.common.ui.common.ProgressScreen
 
 @Composable
-fun <T, S : BaseScreenState<T>> Content(
-    viewModel: BaseViewModel<T, S>,
+fun <T, S : BaseScreenState<T>, V> Content(
+    viewModel: BaseViewModel<T, S, V>,
     mainContent: @Composable (S) -> Unit
 ) {
     val state by viewModel.state.collectAsState()

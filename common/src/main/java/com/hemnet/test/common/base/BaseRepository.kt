@@ -9,17 +9,17 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-abstract class BaseRepository<T>(
+abstract class BaseRepository<T, S>(
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    protected abstract suspend fun query(type: Int?): T?
+    protected abstract suspend fun query(type: S?): T?
 
     protected abstract suspend fun fetch(): T
 
     protected abstract suspend fun saveFetchResult(item: T)
 
-    fun getResult(type: Int? = null): Flow<Async<T>> = flow {
+    fun getResult(type: S? = null): Flow<Async<T>> = flow {
         emit(Async.Loading())
         val dbData = query(type)
 
@@ -30,7 +30,7 @@ abstract class BaseRepository<T>(
         }
     }.flowOn(ioDispatcher)
 
-    private suspend fun FlowCollector<Async<T>>.load(dbData: T? = null, type: Int?) {
+    private suspend fun FlowCollector<Async<T>>.load(dbData: T? = null, type: S?) {
         dbData?.let {
             // ****** VIEW CACHE ******
             emit(Async.Success(it))

@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PropertiesViewModel @Inject constructor(
-    repository: BaseRepository<List<Property>>
-) : BaseViewModel<List<Property>, PropertiesViewState>(
+    repository: BaseRepository<List<Property>, Int>
+) : BaseViewModel<List<Property>, PropertiesViewState, Int>(
     repository,
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {
@@ -24,15 +24,15 @@ class PropertiesViewModel @Inject constructor(
         updateState { old ->
             old.copy(propertyType = type)
         }
-        refresh(isRefreshing = true, hideRefreshing = true)
+        refresh(isRefreshing = true, showRefreshing = false)
     }
 
     fun refresh(
         isRefreshing: Boolean,
-        hideRefreshing: Boolean = false
+        showRefreshing: Boolean = true
     ) {
         val type = _state.value.propertyType
-        refresh(type?.ordinal, isRefreshing, hideRefreshing)
+        refresh(type?.ordinal, isRefreshing, showRefreshing)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

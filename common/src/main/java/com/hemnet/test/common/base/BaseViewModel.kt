@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-abstract class BaseViewModel<T, S : BaseScreenState<T>>(
-    private val repository: BaseRepository<T>,
+abstract class BaseViewModel<T, S : BaseScreenState<T>, V>(
+    private val repository: BaseRepository<T, V>,
     initialState: S
 ) : ViewModel() {
 
@@ -33,15 +33,15 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
     }
 
     fun refresh(
-        type: Int? = null,
+        type: V? = null,
         isRefreshing: Boolean = false,
-        hideRefreshing: Boolean = false
+        showRefreshing: Boolean = true
     ) {
         repository.getResult(type).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
-                        reduceLoading(old, uiState.isRefreshing, hideRefreshing)
+                        reduceLoading(old, uiState.isRefreshing, showRefreshing)
                     }
                 }
 
@@ -51,7 +51,7 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
                     updateState { old ->
                         reduceError(old, uiState.message, uiState.isWarning)
                     }
-                    if (uiState.isWarning && !hideRefreshing) {
+                    if (uiState.isWarning && showRefreshing) {
                         emitWarning(uiState.message)
                     }
                 }
@@ -59,8 +59,8 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>>(
         }.launchIn(viewModelScope)
     }
 
-    private fun reduceLoading(old: S, isRefreshing: Boolean, hideRefreshing: Boolean): S =
-        old.withLoading(isRefreshing, hideRefreshing)
+    private fun reduceLoading(old: S, isRefreshing: Boolean, showRefreshing: Boolean): S =
+        old.withLoading(isRefreshing, showRefreshing)
 
 
     private fun reduceError(old: S, msg: String, isWarning: Boolean): S =

@@ -16,5 +16,5 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     @JvmSuppressWildcards
-    internal abstract fun bindRepository(repository: PropertiesRepository): BaseRepository<List<Property>>
+    internal abstract fun bindRepository(repository: PropertiesRepository): BaseRepository<List<Property>, Int>
 }

@@ -20,7 +20,7 @@ class PropertiesRepository @Inject constructor(
     private val dao: PropertyEntityDao,
     @ApplicationContext context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : BaseRepository<List<@JvmSuppressWildcards Property>>(context, dispatcher) {
+) : BaseRepository<List<@JvmSuppressWildcards Property>, Int>(context, dispatcher) {
 
     override suspend fun query(type: Int?): List<Property> =
         (type?.let { dao.getFilteredProperties(it) }
