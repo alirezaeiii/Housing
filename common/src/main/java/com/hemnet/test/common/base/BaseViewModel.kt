@@ -3,6 +3,7 @@ package com.hemnet.test.common.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hemnet.test.common.utils.Async
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +23,8 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>, V>(
     private val _showWarningUiEvent = MutableSharedFlow<UiEvent>()
     val showWarningUiEvent = _showWarningUiEvent
 
+    private var job: Job? = null
+
     sealed class UiEvent {
         data class ShowWarning(val message: String) : UiEvent()
     }
@@ -37,7 +40,8 @@ abstract class BaseViewModel<T, S : BaseScreenState<T>, V>(
         isRefreshing: Boolean = false,
         showRefreshing: Boolean = true
     ) {
-        repository.getResult(type).onEach { uiState ->
+        job?.cancel()
+        job = repository.getResult(type).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
