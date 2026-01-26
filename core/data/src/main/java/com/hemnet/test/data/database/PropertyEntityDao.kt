@@ -14,5 +14,5 @@ interface PropertyEntityDao {
     suspend fun getFilteredProperties(type: Int): List<PropertyEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(meals: List<PropertyEntity>)
+    suspend fun insertAll(properties: List<PropertyEntity>)
 }
