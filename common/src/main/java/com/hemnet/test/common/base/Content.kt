@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.hemnet.test.common.ui.common.ErrorScreen
 import com.hemnet.test.common.ui.common.ProgressScreen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun <T, S : BaseScreenState<T>, V> Content(
@@ -20,26 +21,22 @@ fun <T, S : BaseScreenState<T>, V> Content(
     val state by viewModel.state.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (state.base.isLoading) {
-            ProgressScreen()
-        }
+        when {
+            state.base.isLoading -> ProgressScreen()
+            state.base.error.isNotEmpty() && !state.base.isWarning ->
+                ErrorScreen(state.base.error) { viewModel.refresh() }
 
-        if (state.base.error.isNotEmpty() && !state.base.isWarning) {
-            ErrorScreen(state.base.error) { viewModel.refresh() }
+            else -> mainContent(state)
         }
 
         val context = LocalContext.current
         LaunchedEffect(Unit) {
-            viewModel.showWarningUiEvent.collect { event ->
+            viewModel.showWarningUiEvent.collectLatest { event ->
                 when (event) {
                     is BaseViewModel.UiEvent.ShowWarning ->
                         Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-
-        if (!state.base.isLoading && (state.base.error.isEmpty() || state.base.isWarning)) {
-            mainContent(state)
         }
     }
 }
