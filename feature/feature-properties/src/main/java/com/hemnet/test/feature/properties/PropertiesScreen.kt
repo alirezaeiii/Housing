@@ -40,6 +40,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -78,6 +79,7 @@ fun PropertiesScreen(
     navigateToDetail: (Property) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
@@ -132,6 +134,7 @@ fun PropertiesScreen(
         }
     }, sheetState = modalBottomSheetState) {
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar(
                     title = {
@@ -149,7 +152,7 @@ fun PropertiesScreen(
                 )
             },
             content = {
-                Content(viewModel) { state ->
+                Content(viewModel, scaffoldState) { state ->
                     Column {
                         PropertiesFilterChips(state.propertyType, viewModel)
                         SwipeRefresh(
