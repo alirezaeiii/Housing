@@ -1,15 +1,15 @@
 package com.hemnet.test.common.base
 
-interface BaseScreenState<T> {
-    val base: ViewState<T>
-    fun copyWithBase(base: ViewState<T>): BaseScreenState<T>
+interface BaseScreenState<TYPE> {
+    val base: ViewState<TYPE>
+    fun copyWithBase(base: ViewState<TYPE>): BaseScreenState<TYPE>
 
     @Suppress("UNCHECKED_CAST")
-    fun <S : BaseScreenState<T>> S.withBase(newBase: ViewState<T>): S =
-        copyWithBase(newBase) as S
+    fun <STATE : BaseScreenState<TYPE>> STATE.withBase(newBase: ViewState<TYPE>): STATE =
+        copyWithBase(newBase) as STATE
 }
 
-fun <T, S : BaseScreenState<T>> S.withLoading(isRefreshing: Boolean, showRefreshing: Boolean): S =
+fun <TYPE, STATE : BaseScreenState<TYPE>> STATE.withLoading(isRefreshing: Boolean, showRefreshing: Boolean): STATE =
     withBase(
         base.copy(
             isLoading = !isRefreshing,
@@ -18,7 +18,7 @@ fun <T, S : BaseScreenState<T>> S.withLoading(isRefreshing: Boolean, showRefresh
         )
     )
 
-fun <T, S : BaseScreenState<T>> S.withError(msg: String, isWarning: Boolean): S =
+fun <TYPE, STATE : BaseScreenState<TYPE>> STATE.withError(msg: String, isWarning: Boolean): STATE =
     withBase(
         base.copy(
             isLoading = false,

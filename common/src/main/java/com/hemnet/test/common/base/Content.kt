@@ -13,10 +13,10 @@ import com.hemnet.test.common.ui.common.ProgressScreen
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun <T, S : BaseScreenState<T>, V> Content(
-    viewModel: BaseViewModel<T, S, V>,
+fun <TYPE, STATE : BaseScreenState<TYPE>, QUERY> Content(
+    viewModel: CoreBaseViewModel<TYPE, STATE, QUERY>,
     scaffoldState: ScaffoldState,
-    mainContent: @Composable (S) -> Unit
+    mainContent: @Composable (STATE) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -31,7 +31,7 @@ fun <T, S : BaseScreenState<T>, V> Content(
         LaunchedEffect(Unit) {
             viewModel.showWarningUiEvent.collectLatest { event ->
                 when (event) {
-                    is BaseViewModel.UiEvent.ShowWarning ->
+                    is CoreBaseViewModel.UiEvent.ShowWarning ->
                         scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
             }

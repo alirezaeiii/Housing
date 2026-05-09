@@ -1,0 +1,76 @@
+package com.hemnet.test.common.base
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hemnet.test.common.utils.Async
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+
+abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QUERY>(
+    private val repository: CoreBaseRepository<TYPE, QUERY>,
+    initialState: STATE
+) : ViewModel() {
+
+    protected val _state = MutableStateFlow(initialState)
+    val state: StateFlow<STATE>
+        get() = _state
+
+    private val _showWarningUiEvent = MutableSharedFlow<UiEvent>()
+    val showWarningUiEvent = _showWarningUiEvent
+
+    private var job: Job? = null
+
+    sealed class UiEvent {
+        data class ShowWarning(val message: String) : UiEvent()
+    }
+
+    protected abstract fun onSuccess(items: TYPE, isRefreshing: Boolean)
+
+    protected fun updateState(reducer: (STATE) -> STATE) {
+        _state.update(reducer)
+    }
+
+    fun refresh(
+        type: QUERY? = null,
+        isRefreshing: Boolean = false,
+        showRefreshing: Boolean = true
+    ) {
+        job?.cancel()
+        job = repository.getResult(type).onEach { uiState ->
+            when (uiState) {
+                is Async.Loading -> {
+                    updateState { old ->
+                        reduceLoading(old, uiState.isRefreshing, showRefreshing)
+                    }
+                }
+
+                is Async.Success -> onSuccess(uiState.data, isRefreshing)
+
+                is Async.Error -> {
+                    updateState { old ->
+                        reduceError(old, uiState.message, uiState.isWarning)
+                    }
+                    if (uiState.isWarning && showRefreshing) {
+                        emitWarning(uiState.message)
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun reduceLoading(old: STATE, isRefreshing: Boolean, showRefreshing: Boolean): STATE =
+        old.withLoading(isRefreshing, showRefreshing)
+
+
+    private fun reduceError(old: STATE, msg: String, isWarning: Boolean): STATE =
+        old.withError(msg, isWarning)
+
+    private suspend fun emitWarning(message: String) {
+        _showWarningUiEvent.emit(UiEvent.ShowWarning(message))
+    }
+}

@@ -1,7 +1,7 @@
 package com.hemnet.test.feature.properties
 
-import com.hemnet.test.common.base.BaseRepository
-import com.hemnet.test.common.base.BaseViewModel
+import com.hemnet.test.common.base.CoreBaseRepository
+import com.hemnet.test.common.base.CoreBaseViewModel
 import com.hemnet.test.common.base.ViewState
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PropertiesViewModel @Inject constructor(
-    repository: BaseRepository<List<Property>, Int>
-) : BaseViewModel<List<Property>, PropertiesViewState, Int>(
+    repository: CoreBaseRepository<List<Property>, Int>
+) : CoreBaseViewModel<List<Property>, PropertiesViewState, Int>(
     repository,
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {

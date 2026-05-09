@@ -1,7 +1,7 @@
 package com.hemnet.test.data.repository
 
 import android.content.Context
-import com.hemnet.test.common.base.CoreBaseRepository
+import com.hemnet.test.common.base.BaseRepository
 import com.hemnet.test.data.api.BackendApi
 import com.hemnet.test.data.database.PropertyEntityDao
 import com.hemnet.test.data.database.asDatabaseModel
@@ -11,20 +11,17 @@ import com.hemnet.test.data.response.asDomainModel
 import com.hemnet.test.domain.model.Property
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PropertiesRepository @Inject constructor(
+class PropertyRepository(
     private val backendApi: BackendApi,
     private val dao: PropertyEntityDao,
     @ApplicationContext context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoreBaseRepository<List<@JvmSuppressWildcards Property>, Int>(context, dispatcher) {
+) : BaseRepository<List<@JvmSuppressWildcards Property>>(context, dispatcher) {
 
-    override suspend fun query(queryType: Int?): List<Property> =
-        (queryType?.let { dao.getFilteredProperties(it) }
-            ?: dao.getAll()).asDomainModel()
+    override suspend fun query(queryType: Nothing?): List<Property> = dao.getAll().asDomainModel()
 
     override suspend fun fetch(): List<Property> = backendApi.getProperties().result.asDomainModel()
 
