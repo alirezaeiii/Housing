@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QUERY>(
-    private val repository: CoreBaseRepository<TYPE, QUERY>,
+abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType>(
+    private val repository: CoreBaseRepository<TYPE, QueryType>,
     initialState: STATE
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QUERY>(
     }
 
     fun refresh(
-        type: QUERY? = null,
+        type: QueryType? = null,
         isRefreshing: Boolean = false,
         showRefreshing: Boolean = true
     ) {

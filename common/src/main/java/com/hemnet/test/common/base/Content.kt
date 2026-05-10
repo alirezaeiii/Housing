@@ -13,8 +13,8 @@ import com.hemnet.test.common.ui.common.ProgressScreen
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun <TYPE, STATE : BaseScreenState<TYPE>, QUERY> Content(
-    viewModel: CoreBaseViewModel<TYPE, STATE, QUERY>,
+fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType> Content(
+    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType>,
     scaffoldState: ScaffoldState,
     mainContent: @Composable (STATE) -> Unit
 ) {
