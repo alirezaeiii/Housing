@@ -1,7 +1,7 @@
 package com.hemnet.test.feature.properties
 
-import com.hemnet.test.common.base.CoreBaseRepository
-import com.hemnet.test.common.base.CoreBaseViewModel
+import com.hemnet.test.common.base.BaseRepositoryWithQueryType
+import com.hemnet.test.common.base.BaseViewModelWithQueryType
 import com.hemnet.test.common.base.ViewState
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PropertiesViewModel @Inject constructor(
-    repository: CoreBaseRepository<List<Property>, Int>
-) : CoreBaseViewModel<List<Property>, PropertiesViewState, Int>(
+    repository: BaseRepositoryWithQueryType<List<Property>, Int>
+) : BaseViewModelWithQueryType<List<Property>, PropertiesViewState, Int>(
     repository,
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {
@@ -32,7 +32,7 @@ class PropertiesViewModel @Inject constructor(
         showRefreshing: Boolean = true
     ) {
         val type = _state.value.propertyType
-        refresh(type?.ordinal, isRefreshing, showRefreshing)
+        refresh(queryType = type?.ordinal, isRefreshing = isRefreshing, showRefreshing = showRefreshing)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

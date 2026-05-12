@@ -13,8 +13,35 @@ import com.hemnet.test.common.ui.common.ProgressScreen
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
+fun <TYPE, STATE : BaseScreenState<TYPE>> Content(
+    viewModel: BaseViewModel<TYPE, STATE>,
+    scaffoldState: ScaffoldState,
+    mainContent: @Composable (STATE) -> Unit
+) {
+    UIContent(viewModel, scaffoldState, mainContent)
+}
+
+@Composable
 fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType> Content(
-    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType>,
+    viewModel: BaseViewModelWithQueryType<TYPE, STATE, QueryType>,
+    scaffoldState: ScaffoldState,
+    mainContent: @Composable (STATE) -> Unit
+) {
+    UIContent(viewModel, scaffoldState, mainContent)
+}
+
+@Composable
+fun <TYPE, STATE : BaseScreenState<TYPE>, FetchType> Content(
+    viewModel: BaseViewModelWithFetchType<TYPE, STATE, FetchType>,
+    scaffoldState: ScaffoldState,
+    mainContent: @Composable (STATE) -> Unit
+) {
+    UIContent(viewModel, scaffoldState, mainContent)
+}
+
+@Composable
+private fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> UIContent(
+    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType, FetchType>,
     scaffoldState: ScaffoldState,
     mainContent: @Composable (STATE) -> Unit
 ) {

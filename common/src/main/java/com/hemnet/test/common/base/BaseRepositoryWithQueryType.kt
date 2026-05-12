@@ -3,7 +3,7 @@ package com.hemnet.test.common.base
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 
-abstract class BaseRepository<TYPE>(
+abstract class BaseRepositoryWithQueryType<TYPE, QueryType>(
     context: Context,
     ioDispatcher: CoroutineDispatcher
-) : CoreBaseRepository<TYPE, Nothing, Nothing>(context, ioDispatcher)
+) : CoreBaseRepository<TYPE, QueryType, Nothing>(context, ioDispatcher)

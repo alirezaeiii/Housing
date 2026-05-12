@@ -1,5 +1,6 @@
 package com.hemnet.test.data.di
 
+import com.hemnet.test.common.base.BaseRepositoryWithQueryType
 import com.hemnet.test.common.base.CoreBaseRepository
 import com.hemnet.test.data.repository.PropertiesRepository
 import com.hemnet.test.domain.model.Property
@@ -16,5 +17,5 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     @JvmSuppressWildcards
-    internal abstract fun bindRepository(repository: PropertiesRepository): CoreBaseRepository<List<Property>, Int>
+    internal abstract fun bindRepository(repository: PropertiesRepository): BaseRepositoryWithQueryType<List<Property>, Int>
 }

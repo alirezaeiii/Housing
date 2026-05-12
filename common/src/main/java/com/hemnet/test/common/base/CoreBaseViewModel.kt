@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType>(
-    private val repository: CoreBaseRepository<TYPE, QueryType>,
+abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType>(
+    private val repository: CoreBaseRepository<TYPE, QueryType, FetchType>,
     initialState: STATE
 ) : ViewModel() {
 
@@ -36,12 +36,13 @@ abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType>
     }
 
     fun refresh(
-        type: QueryType? = null,
+        queryType: QueryType? = null,
+        fetchType: FetchType? = null,
         isRefreshing: Boolean = false,
         showRefreshing: Boolean = true
     ) {
         job?.cancel()
-        job = repository.getResult(type).onEach { uiState ->
+        job = repository.getResult(queryType, fetchType).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
