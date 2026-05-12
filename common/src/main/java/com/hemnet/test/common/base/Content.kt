@@ -40,6 +40,15 @@ fun <TYPE, STATE : BaseScreenState<TYPE>, FetchType> Content(
 }
 
 @Composable
+fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> Content(
+    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType, FetchType>,
+    scaffoldState: ScaffoldState,
+    mainContent: @Composable (STATE) -> Unit
+) {
+    UIContent(viewModel, scaffoldState, mainContent)
+}
+
+@Composable
 private fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> UIContent(
     viewModel: CoreBaseViewModel<TYPE, STATE, QueryType, FetchType>,
     scaffoldState: ScaffoldState,
