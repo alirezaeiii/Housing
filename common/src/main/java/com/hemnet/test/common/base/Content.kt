@@ -5,39 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hemnet.test.common.ui.common.ErrorScreen
 import com.hemnet.test.common.ui.common.ProgressScreen
 import kotlinx.coroutines.flow.collectLatest
-
-@Composable
-fun <TYPE, STATE : BaseScreenState<TYPE>> Content(
-    viewModel: BaseViewModel<TYPE, STATE>,
-    scaffoldState: ScaffoldState,
-    mainContent: @Composable (STATE) -> Unit
-) {
-    UIContent(viewModel, scaffoldState, mainContent)
-}
-
-@Composable
-fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType> Content(
-    viewModel: BaseViewModelWithQueryType<TYPE, STATE, QueryType>,
-    scaffoldState: ScaffoldState,
-    mainContent: @Composable (STATE) -> Unit
-) {
-    UIContent(viewModel, scaffoldState, mainContent)
-}
-
-@Composable
-fun <TYPE, STATE : BaseScreenState<TYPE>, FetchType> Content(
-    viewModel: BaseViewModelWithFetchType<TYPE, STATE, FetchType>,
-    scaffoldState: ScaffoldState,
-    mainContent: @Composable (STATE) -> Unit
-) {
-    UIContent(viewModel, scaffoldState, mainContent)
-}
 
 @Composable
 fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> Content(
@@ -45,16 +18,7 @@ fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> Content(
     scaffoldState: ScaffoldState,
     mainContent: @Composable (STATE) -> Unit
 ) {
-    UIContent(viewModel, scaffoldState, mainContent)
-}
-
-@Composable
-private fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> UIContent(
-    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType, FetchType>,
-    scaffoldState: ScaffoldState,
-    mainContent: @Composable (STATE) -> Unit
-) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize()) {
         when {

@@ -51,4 +51,5 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.coil.compose)
     implementation(libs.coil.compose.core)
+    implementation(libs.accompanist.swiperefresh)
 }

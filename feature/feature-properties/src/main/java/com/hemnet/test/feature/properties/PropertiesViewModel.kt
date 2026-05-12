@@ -24,15 +24,7 @@ class PropertiesViewModel @Inject constructor(
         updateState { old ->
             old.copy(propertyType = type)
         }
-        refresh(isRefreshing = true, showRefreshing = false)
-    }
-
-    fun refresh(
-        isRefreshing: Boolean,
-        showRefreshing: Boolean = true
-    ) {
-        val type = _state.value.propertyType
-        refresh(queryType = type?.ordinal, isRefreshing = isRefreshing, showRefreshing = showRefreshing)
+        refresh(queryType = _state.value.propertyType?.ordinal, isRefreshing = true, showRefreshing = false)
     }
 
     override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {

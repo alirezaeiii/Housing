@@ -62,11 +62,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.hemnet.test.common.base.Content
 import com.hemnet.test.common.ui.common.PropertyImage
+import com.hemnet.test.common.ui.common.PropertiesSwipeRefresh
 import com.hemnet.test.common.ui.lightGreen
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
@@ -155,18 +153,16 @@ fun PropertiesScreen(
                 Content(viewModel, scaffoldState) { state ->
                     Column {
                         PropertiesFilterChips(state.propertyType, viewModel)
-                        SwipeRefresh(
-                            state = rememberSwipeRefreshState(state.base.isRefreshing),
-                            onRefresh = { viewModel.refresh(true) },
-                            indicator = { state, trigger ->
-                                SwipeRefreshIndicator(
-                                    state,
-                                    trigger
+                        PropertiesSwipeRefresh(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            viewModel = viewModel,
+                            state = state,
+                            refresh = {
+                                viewModel.refresh(
+                                    queryType = state.propertyType?.ordinal,
+                                    isRefreshing = true
                                 )
-                            },
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .fillMaxSize()
+                            }
                         ) {
                             PropertiesScreenContent(state.filteredProperties, navigateToDetail)
                         }
