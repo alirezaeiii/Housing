@@ -39,10 +39,11 @@ abstract class CoreBaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType,
         queryType: QueryType? = null,
         fetchType: FetchType? = null,
         isRefreshing: Boolean = false,
-        showRefreshing: Boolean = true
+        showRefreshing: Boolean = true,
+        forceRefresh: Boolean = true
     ) {
         job?.cancel()
-        job = repository.getResult(queryType, fetchType).onEach { uiState ->
+        job = repository.getResult(queryType, fetchType, forceRefresh).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
