@@ -1,7 +1,7 @@
 package com.hemnet.test.data.repository
 
 import android.content.Context
-import com.hemnet.test.common.base.BaseRepositoryWithQueryType
+import com.hemnet.test.common.base.CoreBaseRepository
 import com.hemnet.test.data.api.BackendApi
 import com.hemnet.test.data.database.PropertyEntityDao
 import com.hemnet.test.data.database.asDatabaseModel
@@ -20,13 +20,14 @@ class PropertiesRepository @Inject constructor(
     private val dao: PropertyEntityDao,
     @ApplicationContext context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : BaseRepositoryWithQueryType<List<@JvmSuppressWildcards Property>, Int>(context, dispatcher) {
+) : CoreBaseRepository<List<@JvmSuppressWildcards Property>, Int, Nothing>(context, dispatcher) {
 
     override suspend fun query(queryType: Int?): List<Property> =
         (queryType?.let { dao.getFilteredProperties(it) }
             ?: dao.getAll()).asDomainModel()
 
-    override suspend fun fetch(fetchType: Nothing?): List<Property> = backendApi.getProperties().result.asDomainModel()
+    override suspend fun fetch(fetchType: Nothing?): List<Property> =
+        backendApi.getProperties().result.asDomainModel()
 
     override suspend fun saveFetchResult(item: List<Property>) {
         dao.insertAll(item.asDatabaseModel())
