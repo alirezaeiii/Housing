@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> Content(
-    viewModel: CoreBaseViewModel<TYPE, STATE, QueryType, FetchType>,
+    viewModel: BaseViewModel<TYPE, STATE, QueryType, FetchType>,
     scaffoldState: ScaffoldState,
     mainContent: @Composable (STATE) -> Unit
 ) {
@@ -31,7 +31,7 @@ fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> Content(
         LaunchedEffect(Unit) {
             viewModel.showWarningUiEvent.collectLatest { event ->
                 when (event) {
-                    is CoreBaseViewModel.UiEvent.ShowWarning ->
+                    is BaseViewModel.UiEvent.ShowWarning ->
                         scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
             }

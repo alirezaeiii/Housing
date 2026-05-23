@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-abstract class CoreBaseRepository<TYPE, QueryType, FetchType>(
+abstract class BaseRepository<TYPE, QueryType, FetchType>(
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher,
     private val cacheDurationMs: Long = 60_000L
@@ -60,11 +60,11 @@ abstract class CoreBaseRepository<TYPE, QueryType, FetchType>(
             emit(Async.Success(it))
         }
         try {
-            // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
             if (forceRefresh || isCacheExpired()) {
                 if (dbData != null) {
                     emit(Async.Loading(true))
                 }
+                // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
                 refresh(fetchType)
                 lastRefreshTime = System.currentTimeMillis()
                 // ****** VIEW CACHE ******

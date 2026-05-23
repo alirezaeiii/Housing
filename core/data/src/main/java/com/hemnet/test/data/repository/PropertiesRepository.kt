@@ -1,7 +1,7 @@
 package com.hemnet.test.data.repository
 
 import android.content.Context
-import com.hemnet.test.common.base.CoreBaseRepository
+import com.hemnet.test.common.base.BaseRepository
 import com.hemnet.test.data.api.BackendApi
 import com.hemnet.test.data.database.PropertyEntityDao
 import com.hemnet.test.data.database.asDatabaseModel
@@ -20,7 +20,7 @@ class PropertiesRepository @Inject constructor(
     private val dao: PropertyEntityDao,
     @ApplicationContext context: Context,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : CoreBaseRepository<List<@JvmSuppressWildcards Property>, Int, Nothing>(context, dispatcher) {
+) : BaseRepository<List<@JvmSuppressWildcards Property>, Int, Nothing>(context, dispatcher) {
 
     override suspend fun query(queryType: Int?): List<Property> =
         (queryType?.let { dao.getFilteredProperties(it) }
