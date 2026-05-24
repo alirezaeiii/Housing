@@ -17,42 +17,42 @@ abstract class BaseRepository<TYPE, QueryType, FetchType>(
 
     private var lastRefreshTime: Long = 0L
 
-    protected abstract suspend fun query(queryType: QueryType?): TYPE?
+    protected abstract suspend fun query(queryValue: QueryType?): TYPE?
 
-    protected abstract suspend fun fetch(fetchType: FetchType?): TYPE
+    protected abstract suspend fun fetch(fetchValue: FetchType?): TYPE
 
     protected abstract suspend fun saveFetchResult(item: TYPE)
 
     fun getResult(
-        queryType: QueryType? = null,
-        fetchType: FetchType? = null,
+        queryValue: QueryType? = null,
+        fetchValue: FetchType? = null,
         forceRefresh: Boolean = true
     ): Flow<Async<TYPE>> =
         flow {
             emit(Async.Loading())
-            val dbData = query(queryType)
+            val dbData = query(queryValue)
 
             when {
                 dbData == null -> load(
-                    queryType = queryType,
-                    fetchType = fetchType,
+                    queryValue = queryValue,
+                    fetchValue = fetchValue,
                     forceRefresh = forceRefresh
                 )
 
                 dbData is List<*> && dbData.isEmpty() -> load(
-                    queryType = queryType,
-                    fetchType = fetchType,
+                    queryValue = queryValue,
+                    fetchValue = fetchValue,
                     forceRefresh = forceRefresh
                 )
 
-                else -> load(dbData, queryType, fetchType, forceRefresh)
+                else -> load(dbData, queryValue, fetchValue, forceRefresh)
             }
         }.flowOn(ioDispatcher)
 
     private suspend fun FlowCollector<Async<TYPE>>.load(
         dbData: TYPE? = null,
-        queryType: QueryType?,
-        fetchType: FetchType?,
+        queryValue: QueryType?,
+        fetchValue: FetchType?,
         forceRefresh: Boolean = true
     ) {
         dbData?.let {
@@ -65,10 +65,10 @@ abstract class BaseRepository<TYPE, QueryType, FetchType>(
                     emit(Async.Loading(true))
                 }
                 // ****** MAKE NETWORK CALL, SAVE RESULT TO CACHE ******
-                refresh(fetchType)
+                refresh(fetchValue)
                 lastRefreshTime = System.currentTimeMillis()
                 // ****** VIEW CACHE ******
-                emit(Async.Success(query(queryType)!!))
+                emit(Async.Success(query(queryValue)!!))
             }
         } catch (_: Throwable) {
             emit(
@@ -82,8 +82,8 @@ abstract class BaseRepository<TYPE, QueryType, FetchType>(
         }
     }
 
-    private suspend fun refresh(fetchType: FetchType?) {
-        saveFetchResult(fetch(fetchType))
+    private suspend fun refresh(fetchValue: FetchType?) {
+        saveFetchResult(fetch(fetchValue))
     }
 
     private fun isCacheExpired(): Boolean {

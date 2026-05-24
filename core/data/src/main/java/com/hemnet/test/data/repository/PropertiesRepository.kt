@@ -22,11 +22,11 @@ class PropertiesRepository @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : BaseRepository<List<@JvmSuppressWildcards Property>, Int, Nothing>(context, dispatcher) {
 
-    override suspend fun query(queryType: Int?): List<Property> =
-        (queryType?.let { dao.getFilteredProperties(it) }
+    override suspend fun query(queryValue: Int?): List<Property> =
+        (queryValue?.let { dao.getFilteredProperties(it) }
             ?: dao.getAll()).asDomainModel()
 
-    override suspend fun fetch(fetchType: Nothing?): List<Property> =
+    override suspend fun fetch(fetchValue: Nothing?): List<Property> =
         backendApi.getProperties().result.asDomainModel()
 
     override suspend fun saveFetchResult(item: List<Property>) {

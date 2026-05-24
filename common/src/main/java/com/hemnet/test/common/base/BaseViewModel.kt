@@ -7,6 +7,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -17,11 +19,10 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
 ) : ViewModel() {
 
     protected val _state = MutableStateFlow(initialState)
-    val state: StateFlow<STATE>
-        get() = _state
+    val state: StateFlow<STATE> = _state.asStateFlow()
 
     private val _showWarningUiEvent = MutableSharedFlow<UiEvent>()
-    val showWarningUiEvent = _showWarningUiEvent
+    val showWarningUiEvent = _showWarningUiEvent.asSharedFlow()
 
     private var job: Job? = null
 
@@ -29,21 +30,21 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
         data class ShowWarning(val message: String) : UiEvent()
     }
 
-    protected abstract fun onSuccess(items: TYPE, isRefreshing: Boolean)
+    protected abstract fun onSuccess(items: TYPE, isUserRefresh: Boolean)
 
     protected fun updateState(reducer: (STATE) -> STATE) {
         _state.update(reducer)
     }
 
     fun refresh(
-        queryType: QueryType? = null,
-        fetchType: FetchType? = null,
-        isRefreshing: Boolean = false,
+        queryValue: QueryType? = null,
+        fetchValue: FetchType? = null,
+        isUserRefresh: Boolean = false,
         showRefreshing: Boolean = true,
         forceRefresh: Boolean = true
     ) {
         job?.cancel()
-        job = repository.getResult(queryType, fetchType, forceRefresh).onEach { uiState ->
+        job = repository.getResult(queryValue, fetchValue, forceRefresh).onEach { uiState ->
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
@@ -51,7 +52,7 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
                     }
                 }
 
-                is Async.Success -> onSuccess(uiState.data, isRefreshing)
+                is Async.Success -> onSuccess(uiState.data, isUserRefresh)
 
                 is Async.Error -> {
                     updateState { old ->

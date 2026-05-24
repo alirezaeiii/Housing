@@ -25,15 +25,15 @@ class PropertiesViewModel @Inject constructor(
             old.copy(propertyType = type)
         }
         refresh(
-            queryType = _state.value.propertyType?.ordinal,
-            isRefreshing = true,
+            queryValue = _state.value.propertyType?.ordinal,
+            isUserRefresh = true,
             showRefreshing = false,
             forceRefresh = false
         )
     }
 
-    override fun onSuccess(items: List<Property>, isRefreshing: Boolean) {
-        if (isRefreshing) {
+    override fun onSuccess(items: List<Property>, isUserRefresh: Boolean) {
+        if (isUserRefresh) {
             submitQuery(_state.value.query, items)
         } else {
             _state.value = PropertiesViewState(
