@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.update
 
 abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType>(
     private val repository: BaseRepository<TYPE, QueryType, FetchType>,
-    initialState: STATE
+    initialState: STATE,
+    loadDataOnInit: Boolean = true
 ) : ViewModel() {
 
     protected val _state = MutableStateFlow(initialState)
@@ -30,6 +31,12 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
         data class ShowWarning(val message: String) : UiEvent()
     }
 
+    init {
+        if (loadDataOnInit) {
+            refresh()
+        }
+    }
+
     protected abstract fun onSuccess(items: TYPE, isUserRefresh: Boolean)
 
     protected fun updateState(reducer: (STATE) -> STATE) {
@@ -40,7 +47,6 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
         queryValue: QueryType? = null,
         fetchValue: FetchType? = null,
         isUserRefresh: Boolean = false,
-        showRefreshing: Boolean = true,
         forceRefresh: Boolean = true
     ) {
         job?.cancel()
@@ -48,7 +54,7 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
             when (uiState) {
                 is Async.Loading -> {
                     updateState { old ->
-                        reduceLoading(old, uiState.isRefreshing, showRefreshing)
+                        reduceLoading(old, uiState.isRefreshing)
                     }
                 }
 
@@ -58,7 +64,7 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
                     updateState { old ->
                         reduceError(old, uiState.message, uiState.isWarning)
                     }
-                    if (uiState.isWarning && showRefreshing) {
+                    if (uiState.isWarning) {
                         emitWarning(uiState.message)
                     }
                 }
@@ -66,8 +72,8 @@ abstract class BaseViewModel<TYPE, STATE : BaseScreenState<TYPE>, QueryType, Fet
         }.launchIn(viewModelScope)
     }
 
-    private fun reduceLoading(old: STATE, isRefreshing: Boolean, showRefreshing: Boolean): STATE =
-        old.withLoading(isRefreshing, showRefreshing)
+    private fun reduceLoading(old: STATE, isRefreshing: Boolean): STATE =
+        old.withLoading(isRefreshing)
 
 
     private fun reduceError(old: STATE, msg: String, isWarning: Boolean): STATE =
