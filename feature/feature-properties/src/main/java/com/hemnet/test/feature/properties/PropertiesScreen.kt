@@ -160,7 +160,6 @@ fun PropertiesScreen(
                             refresh = {
                                 viewModel.refresh(
                                     queryValue = state.propertyType?.ordinal,
-                                    isUserRefresh = true
                                 )
                             }
                         ) {

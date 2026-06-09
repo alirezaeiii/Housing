@@ -16,18 +16,8 @@ class PropertiesViewModel @Inject constructor(
     PropertiesViewState(base = ViewState(isLoading = true))
 ) {
 
-    override fun onSuccess(items: List<Property>, isUserRefresh: Boolean) {
-        if (isUserRefresh) {
-            submitQuery(_state.value.query, items)
-        } else {
-            _state.value = PropertiesViewState(
-                base = ViewState(
-                    items = items,
-                ),
-                filteredProperties = items,
-                propertyType = _state.value.propertyType
-            )
-        }
+    override fun onSuccess(items: List<Property>) {
+        submitQuery(_state.value.query, items)
     }
 
     fun onFilterChanged(type: PropertyType?) {
@@ -36,7 +26,6 @@ class PropertiesViewModel @Inject constructor(
         }
         refresh(
             queryValue = _state.value.propertyType?.ordinal,
-            isUserRefresh = true,
             forceRefresh = false
         )
     }

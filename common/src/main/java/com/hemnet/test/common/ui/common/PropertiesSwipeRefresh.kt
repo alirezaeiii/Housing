@@ -15,7 +15,7 @@ fun <TYPE, STATE : BaseScreenState<TYPE>, QueryType, FetchType> PropertiesSwipeR
     viewModel: BaseViewModel<TYPE, STATE, QueryType, FetchType>,
     state: STATE,
     isRefreshing: Boolean = state.base.isRefreshing,
-    refresh: () -> Unit = { viewModel.refresh(isUserRefresh = true) },
+    refresh: () -> Unit = { viewModel.refresh() },
     mainContent: @Composable () -> Unit,
 ) {
     SwipeRefresh(
