@@ -36,13 +36,15 @@ class PropertiesViewModel @Inject constructor(
         val filtered = if (query.isNullOrBlank()) properties
         else properties.filter { it.area.contains(query.trim(), ignoreCase = true) }
 
-        _state.value = PropertiesViewState(
-            query = query,
-            filteredProperties = filtered,
-            propertyType = _state.value.propertyType,
-            base = ViewState(
-                items = properties
+        updateState {
+            PropertiesViewState(
+                query = query,
+                filteredProperties = filtered,
+                propertyType = _state.value.propertyType,
+                base = ViewState(
+                    items = properties
+                )
             )
-        )
+        }
     }
 }
