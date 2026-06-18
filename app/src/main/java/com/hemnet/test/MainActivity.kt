@@ -16,8 +16,8 @@ import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hemnet.test.common.ui.AppTheme
-import com.hemnet.test.common.ui.common.Screens
-import com.hemnet.test.common.ui.common.Screens.Companion.PROPERTY
+import com.hemnet.test.common.ui.common.Routes
+import com.hemnet.test.common.ui.common.Routes.Companion.PROPERTY
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.feature.details.DetailsScreen
 import com.hemnet.test.feature.properties.PropertiesScreen
@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Screens.Properties.title) {
-        composable(Screens.Properties.title) {
+    NavHost(navController, startDestination = Routes.Properties.title) {
+        composable(Routes.Properties.title) {
             PropertiesScreen(hiltViewModel()) { property ->
                 val json = Uri.encode(
                     Gson().toJson(
@@ -53,12 +53,12 @@ fun NavGraph(navController: NavHostController) {
                     )
                 )
                 navController.navigate(
-                    Screens.Details.title.replace("{${PROPERTY}}", json)
+                    Routes.Details.title.replace("{${PROPERTY}}", json)
                 )
             }
         }
         composable(
-            Screens.Details.title, arguments = listOf(
+            Routes.Details.title, arguments = listOf(
             navArgument(PROPERTY) {
                 type = NavType.StringType
             })) { from ->
