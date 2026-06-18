@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hemnet.test.common.ui.AppTheme
+import com.hemnet.test.common.ui.theme.AppTheme
 import com.hemnet.test.common.ui.common.Routes
 import com.hemnet.test.common.ui.common.Routes.Companion.PROPERTY
 import com.hemnet.test.domain.model.Property

@@ -1,4 +1,4 @@
-package com.hemnet.test.common.ui
+package com.hemnet.test.common.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

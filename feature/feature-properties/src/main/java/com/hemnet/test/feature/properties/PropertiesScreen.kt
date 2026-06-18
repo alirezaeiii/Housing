@@ -65,7 +65,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hemnet.test.common.base.Content
 import com.hemnet.test.common.ui.common.PropertyImage
 import com.hemnet.test.common.ui.common.PropertiesSwipeRefresh
-import com.hemnet.test.common.ui.lightGreen
+import com.hemnet.test.common.ui.theme.lightGreen
 import com.hemnet.test.domain.model.Property
 import com.hemnet.test.domain.model.PropertyType
 import kotlinx.coroutines.launch
