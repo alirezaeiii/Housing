@@ -10,7 +10,7 @@ data class PropertiesViewState(
     val filteredProperties: List<Property> = emptyList(),
     val query: String? = null,
     val propertyType: PropertyType? = null
-) : BaseScreenState<List<Property>> {
+) : BaseScreenState<List<Property>, PropertiesViewState> {
 
     override fun copyWithBase(base: ViewState<List<Property>>) = copy(base = base)
 }
